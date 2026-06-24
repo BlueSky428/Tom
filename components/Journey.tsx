@@ -302,6 +302,28 @@ export default function Journey() {
     []
   );
 
+  // Keyboard era navigation (1–4) when career section is in view
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      const tag = (e.target as HTMLElement)?.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
+
+      const num = parseInt(e.key, 10);
+      if (num >= 1 && num <= 4) {
+        if (!containerRef.current) return;
+        const rect = containerRef.current.getBoundingClientRect();
+        const inView = rect.top < window.innerHeight && rect.bottom > 0;
+        if (inView) {
+          e.preventDefault();
+          handleDotClick(num - 1);
+        }
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [handleDotClick]);
+
   const currentEra = eras[activeEra];
   const progressWidth = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
@@ -386,21 +408,62 @@ export default function Journey() {
           </div>
         </motion.div>
 
-        {/* Era dots — now clickable with proper scroll targets */}
+        {/* Era navigation — click or press 1–4 */}
         <motion.div
-          className="absolute right-6 md:right-10 top-1/2 -translate-y-1/2 flex flex-col gap-3 z-20"
+          className="absolute bottom-20 md:bottom-[4.5rem] left-1/2 -translate-x-1/2 z-20 flex flex-wrap items-center justify-center gap-1.5 px-2 max-w-[95vw]"
+          style={{ opacity: fadeIn }}
+          role="tablist"
+          aria-label="Career eras"
+        >
+          {eras.map((era, i) => (
+            <button
+              key={era.index}
+              type="button"
+              role="tab"
+              aria-selected={i === activeEra}
+              aria-label={`${era.title} era, ${era.period}`}
+              onClick={() => handleDotClick(i)}
+              className="px-2.5 py-1.5 text-[10px] md:text-xs rounded-full cursor-pointer transition-all duration-300"
+              style={{
+                fontFamily: "var(--font-inter)",
+                letterSpacing: "0.04em",
+                border: `1px solid ${
+                  i === activeEra
+                    ? `rgba(${era.colorRgb}, 0.5)`
+                    : "rgba(255,255,255,0.1)"
+                }`,
+                background:
+                  i === activeEra
+                    ? `rgba(${era.colorRgb}, 0.12)`
+                    : "rgba(255,255,255,0.03)",
+                color:
+                  i === activeEra
+                    ? era.color
+                    : "rgba(255,255,255,0.4)",
+              }}
+            >
+              <span className="hidden sm:inline">{era.index}&nbsp;</span>
+              {era.title}
+            </button>
+          ))}
+        </motion.div>
+
+        {/* Era dots — right side */}
+        <motion.div
+          className="absolute right-6 md:right-10 top-1/2 -translate-y-1/2 flex flex-col gap-3 z-20 max-sm:hidden"
           style={{ opacity: fadeIn }}
         >
           {eras.map((era, i) => (
             <button
               key={era.index}
+              type="button"
               onClick={() => handleDotClick(i)}
               aria-label={`Jump to ${era.title} era`}
-              className="w-1.5 h-1.5 rounded-full cursor-pointer"
+              className="w-2 h-2 rounded-full cursor-pointer"
               style={{
                 background:
                   i === activeEra ? currentEra.color : "rgba(255,255,255,0.2)",
-                transform: i === activeEra ? "scale(1.8)" : "scale(1)",
+                transform: i === activeEra ? "scale(1.5)" : "scale(1)",
                 transition: "all 0.4s ease",
                 border: "none",
                 padding: 0,

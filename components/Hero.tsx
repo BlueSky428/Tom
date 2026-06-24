@@ -7,7 +7,7 @@ const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 export default function Hero() {
   return (
-    <section className="relative min-h-screen overflow-hidden">
+    <section id="top" className="relative min-h-screen overflow-hidden">
       {/* Background photo */}
       <div className="absolute inset-0">
         <Image

@@ -130,7 +130,7 @@ export default function FreeTime() {
   const rowTwo = moments.slice(4);
 
   return (
-    <section className="relative pt-10 md:pt-12 pb-24 md:pb-32 px-8 md:px-16 xl:px-24">
+    <section id="life" className="relative pt-10 md:pt-12 pb-24 md:pb-32 px-8 md:px-16 xl:px-24">
       {/* Section label */}
       <motion.div
         className="flex items-center gap-4 mb-12 md:mb-16"

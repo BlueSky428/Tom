@@ -1,4 +1,5 @@
 import CustomCursor from "@/components/CustomCursor";
+import SectionNav from "@/components/SectionNav";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
 import Journey from "@/components/Journey";
@@ -10,7 +11,8 @@ export default function Home() {
   return (
     <>
       <CustomCursor />
-      <main>
+      <SectionNav />
+      <main id="main">
         <Hero />
         <About />
         <Journey />

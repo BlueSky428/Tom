@@ -22,6 +22,31 @@ html {
   text-rendering: optimizeLegibility;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Screen-reader only until focused */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Visible focus for keyboard users */
+:focus-visible {
+  outline: 2px solid rgba(59, 130, 246, 0.8);
+  outline-offset: 3px;
+}
+
 body {
   background: #050505;
   color: #ffffff;
@@ -42,20 +67,31 @@ button {
   }
 }
 
-/* Anchor links offset for floating nav */
+/* Anchor links offset */
 [id] {
-  scroll-margin-top: 6.5rem;
+  scroll-margin-top: 2rem;
 }
 
-/* Custom scrollbar — minimal, single pixel */
+/* Scrollbar — visible enough to grab without a working wheel */
 ::-webkit-scrollbar {
-  width: 1px;
+  width: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: #050505;
+  background: #0a0a0a;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(59, 130, 246, 0.5);
+  background: rgba(59, 130, 246, 0.45);
+  border-radius: 5px;
+  border: 2px solid #0a0a0a;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(59, 130, 246, 0.7);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(59, 130, 246, 0.45) #0a0a0a;
 }
 
 /* Text selection */
